@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Finance</string>
+
+    <string name="login_title">Iniciar sesión</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="link_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="link_signup">¿No tienes cuenta? Regístrate</string>
+    <string name="error_invalid_credentials">Correo o contraseña inválidos</string>
+
+    <string name="sign_up_title">Crear cuenta</string>
+    <string name="forgot_title">Recuperar contraseña</string>
+    <string name="btn_create_account">Crear cuenta</string>
+    <string name="btn_send_reset">Enviar correo de recuperación</string>
+
+    <string name="dashboard_title">FinanceApp</string>
+    <string name="resumen_title">Resumen</string>
+    <string name="gasto_categoria">Gasto por categoría</string>
+    <string name="todos_los_montos">Movimientos</string>
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="btn_editar">Editar</string>
+    <string name="monto_total">Monto total: %1$s</string>
+    <string name="monto_ingresado">Monto ingresado: %1$s</string>
+    <string name="filtro_mes">Mes</string>
+    <string name="filtro_sem">Semana</string>
+    <string name="filtro_dia">Día</string>
+
+    <string name="add_title">Nuevo movimiento</string>
+    <string name="tipo">Tipo</string>
+    <string name="tipo_gasto">Gasto</string>
+    <string name="tipo_ingreso">Ingreso</string>
+    <string name="categoria">Categoría</string>
+    <string name="monto">Monto</string>
+    <string name="nota">Nota</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="back">Volver</string>
+    <string name="gasto">Gasto</string>
+    <string name="ingreso">Ingreso</string>
+    <string name="loading">Cargando...</string>
+    <string name="edit_title">Editar Movimiento</string>
+    <string name="tip_tap_to_edit">Toca un ítem para editarlo</string>
+</resources>

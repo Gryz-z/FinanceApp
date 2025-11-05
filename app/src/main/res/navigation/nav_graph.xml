@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Login -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.financeapp.ui.login.LoginFragment"
+        android:label="@string/login_title">
+        <action
+            android:id="@+id/action_login_to_dashboard"
+            app:destination="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_login_to_signup"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_login_to_forgot"
+            app:destination="@id/forgotFragment" />
+    </fragment>
+
+    <!-- Sign up -->
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.financeapp.ui.login.SignUpFragment"
+        android:label="@string/sign_up_title" />
+
+    <!-- Forgot password -->
+    <fragment
+        android:id="@+id/forgotFragment"
+        android:name="com.example.financeapp.ui.login.ForgotFragment"
+        android:label="@string/forgot_title" />
+
+    <!-- Dashboard -->
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.financeapp.ui.dashboard.DashboardFragment"
+        android:label="@string/dashboard_title">
+        <action
+            android:id="@+id/action_dashboard_to_addEdit"
+            app:destination="@id/addEditFragment" />
+    </fragment>
+
+    <!-- Add / Edit (form mock) -->
+    <fragment
+        android:id="@+id/addEditFragment"
+        android:name="com.example.financeapp.ui.dashboard.AddEditFragment"
+        android:label="@string/add_title" />
+</navigation>
