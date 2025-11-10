@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.financeapp.FinanceApplication // <-- 1. IMPORT AÑADIDO
 import com.example.financeapp.R
 import com.example.financeapp.databinding.FragmentDashboardBinding
 import com.example.financeapp.domain.model.Range
@@ -27,8 +28,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.snackbar.Snackbar
-import com.example.financeapp.fake.FakeTransactionRepository
-
+// NO IMPORTAMOS 'FakeTransactionRepository'
 
 class DashboardFragment : Fragment() {
 
@@ -37,12 +37,20 @@ class DashboardFragment : Fragment() {
 
     private lateinit var adapter: TxAdapter
 
+    // --- 2. BLOQUE MODIFICADO ---
     private val vm by viewModels<DashboardViewModel> {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(c: Class<T>): T =
-                DashboardViewModel(FakeTransactionRepository()) as T
+            override fun <T : ViewModel> create(c: Class<T>): T {
+                // Obtenemos el AppContainer
+                val application = requireActivity().application as FinanceApplication
+                val appContainer = application.appContainer
+
+                // Pasamos el Repositorio REAL
+                return DashboardViewModel(appContainer.transactionRepository) as T
+            }
         }
     }
+    // --- FIN DEL BLOQUE ---
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View {
         _b = FragmentDashboardBinding.inflate(i, c, false)
@@ -61,7 +69,7 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboard_to_addEdit)
         }
 
-        // Botón Editar -> desplazarse a la lista + hint
+        // Botón Editar
         b.btnEdit.setOnClickListener {
             b.rootScroll.smoothScrollTo(0, b.recycler.top)
             Snackbar.make(b.root, getString(R.string.tip_tap_to_edit), Snackbar.LENGTH_SHORT).show()
@@ -78,22 +86,15 @@ class DashboardFragment : Fragment() {
         }
         b.recycler.adapter = adapter
 
-        // --- CORRECCIÓN CLAVE AQUÍ ---
-        // Resultados desde Add/Edit
+        // Resultados desde Add/Edit (esto ya estaba bien)
         parentFragmentManager.setFragmentResultListener("add_result", viewLifecycleOwner) { _, bundle ->
-            // 1. Recuperamos la transacción
             val tx = bundle.getParcelable<Transaction>("tx") ?: return@setFragmentResultListener
-            // 2. Llamamos a la nueva función que GUARDA y LUEGO recarga
             vm.addTx(tx)
         }
         parentFragmentManager.setFragmentResultListener("update_result", viewLifecycleOwner) { _, bundle ->
-            // 1. Recuperamos la transacción
             val tx = bundle.getParcelable<Transaction>("tx") ?: return@setFragmentResultListener
-            // 2. Llamamos a la nueva función que GUARDA y LUEGO recarga
             vm.updateTx(tx)
         }
-        // --- FIN DE LA CORRECCIÓN ---
-
 
         // Obtener el color de texto principal del tema
         val typedValue = TypedValue()
@@ -150,21 +151,17 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() { _b = null; super.onDestroyView() }
 }
 
-/** Agrupa en secciones por tipo/categoría (ajústalo a tus criterios) */
+// Esta función 'buildRows' está bien, no necesita cambios
 private fun buildRows(txs: List<Transaction>): List<Row> {
     val ingresos = txs.filter { it.type.name == "INCOME" }
-
     val expenses = txs.filter { it.type.name == "EXPENSE" }
-
     val catPasivos = listOf("arriendo", "luz", "agua", "internet")
     val catMensuales = listOf("mensual")
     val catOcio = listOf("comida", "salida", "ocio")
-
     val pasivos = mutableListOf<Transaction>()
     val mensuales = mutableListOf<Transaction>()
     val ocio = mutableListOf<Transaction>()
     val otros = mutableListOf<Transaction>()
-
     for (tx in expenses) {
         val catLower = tx.category.lowercase()
         when {
@@ -174,11 +171,9 @@ private fun buildRows(txs: List<Transaction>): List<Row> {
             else -> otros.add(tx)
         }
     }
-
     fun block(title: String, list: List<Transaction>) =
         if (list.isEmpty()) emptyList()
         else listOf(Section(title)) + list.map { RowTx(it) }
-
     return buildList {
         addAll(block("Ingresos", ingresos))
         addAll(block("Gastos pasivos", pasivos))

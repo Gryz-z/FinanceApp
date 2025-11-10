@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-parcelize")
+    // AÑADIDO: Esta es la versión de KSP que COINCIDE con tu Kotlin 1.9.24
+    id("com.google.devtools.ksp") version "1.9.24-1.0.20"
 }
 
 android {
@@ -50,4 +52,12 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
+    // --- Dependencias de Room (Esto ya estaba bien) ---
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion") // Para Coroutines/Flow
+    // KSP (reemplaza a kapt)
+    ksp("androidx.room:room-compiler:$roomVersion")
+    // --- Fin de dependencias de Room ---
 }
